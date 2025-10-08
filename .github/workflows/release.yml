@@ -1,0 +1,50 @@
+name: Realease
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: "18"
+
+      - name: Cache pnpm modules
+        uses: actions/cache@v4
+        with:
+          path: |
+            **/node_modules
+            **/.pnpm-store
+          key: pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            pnpm-
+
+      - name: Install pnpm
+        run: npm install -g pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build intlize packages
+        run: pnpm turbo run build --filter=@intlize/nextjs --filter=@intlize/react-router --filter=@intlize/tanstack-router
+
+      - name: Create Release Pull Request or Publish to npm
+        uses: changesets/action@v1
+        with:
+          version: pnpm ci:version
+          commit: "chore: new release"
+          title: "chore: new release"
+          publish: pnpm ci:release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_ACTION_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,35 @@
+{
+	"$schema": "https://biomejs.dev/schemas/2.2.5/schema.json",
+	"files": {
+		"includes": ["**", "!.turbo", "!.next", "!.changeset", "!.pnpm-store", "!packages/react/dist"]
+	},
+	"assist": { "actions": { "source": { "organizeImports": "on" } } },
+	"formatter": {
+		"lineWidth": 120
+	},
+	"linter": {
+		"enabled": true,
+		"rules": {
+			"recommended": true,
+			"a11y": {
+				"useKeyWithClickEvents": "off"
+			},
+			"nursery": {
+				"useSortedClasses": "off"
+			},
+			"style": {
+				"useBlockStatements": "off"
+			},
+			"suspicious": {
+				"noExplicitAny": "off",
+				"noArrayIndexKey": "off",
+				"noConsole": { "level": "error", "options": { "allow": ["log"] } }
+			},
+			"correctness": {
+				"noUnusedVariables": "error",
+				"noUnusedImports": "error",
+				"useExhaustiveDependencies": "off"
+			}
+		}
+	}
+}

@@ -1,0 +1,60 @@
+{
+	"name": "@intlize/tanstack-router",
+	"version": "0.0.1",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+  "description": "TanStack Router adapter for @intlize/core. Adds route-aware i18n support, locale-prefixed paths, and seamless navigation utilities for TanStack Router apps.",
+  "keywords": [
+    "i18n",
+    "tanstack-router",
+    "internationalization",
+    "localization",
+    "react",
+    "adapter",
+    "routing"
+  ],
+	"author": "damianricobelli",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/damianricobelli/intlize.git",
+		"directory": "packages/tanstack-router"
+	},
+	"homepage": "https://intlize.vercel.app",
+	"sideEffects": false,
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"lint": "turbo lint",
+		"prepublishOnly": "pnpm run build",
+		"clean": "rm -rf .turbo && rm -rf node_modules dist",
+		"test": "vitest"
+	},
+	"dependencies": {
+		"@intlize/core": "workspace:*"
+	},
+	"peerDependencies": {
+		"typescript": ">=5.0.2",
+		"react": "^17.0.0 || ^18.0.0 || ^19.0.0"
+	},
+	"devDependencies": {
+		"@tanstack/react-router": "1.132.47",
+    "@types/react": "catalog:",
+		"react": "catalog:",
+		"tsup": "catalog:",
+		"terser": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}

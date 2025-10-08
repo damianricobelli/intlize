@@ -1,0 +1,56 @@
+{
+	"name": "@intlize/core",
+	"version": "0.0.1",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+  "description": "Core internationalization engine for React apps. Provides locale management, translation utilities, and adapter support for framework-specific integrations.",
+  "keywords": [
+    "i18n",
+    "internationalization",
+    "react",
+    "translation",
+    "localization",
+    "adapter",
+    "framework-agnostic"
+  ],
+	"author": "damianricobelli",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/damianricobelli/intlize.git",
+		"directory": "packages/core"
+	},
+	"homepage": "https://intlize.vercel.app",
+	"sideEffects": false,
+	"files": [
+		"dist"
+	],
+	"type": "module",
+	"main": "./dist/index.js",
+	"module": "./dist/index.js",
+	"exports": {
+		".": "./dist/index.js"
+	},
+	"scripts": {
+		"build": "tsup",
+		"dev": "tsup --watch",
+		"lint": "turbo lint",
+		"prepublishOnly": "pnpm run build",
+		"clean": "rm -rf .turbo && rm -rf node_modules dist",
+		"test": "vitest"
+	},
+	"peerDependencies": {
+		"typescript": ">=5.0.2"
+	},
+	"devDependencies": {
+    "@types/node": "catalog:",
+    "@types/react": "catalog:",
+		"react": "catalog:",
+		"tsup": "catalog:",
+		"terser": "catalog:",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}
