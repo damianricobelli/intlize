@@ -1,9 +1,7 @@
+import { CodeTabs } from "@/components/code-tabs";
 import { Footer } from "@/components/footer";
 import Link from "fumadocs-core/link";
 import { ArrowRight, CheckCircle2, Code2, Layers, Zap } from "lucide-react";
-
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { dracula } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 export default function HomePage() {
   return (
@@ -13,77 +11,33 @@ export default function HomePage() {
           <div className="inline-block mb-4 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 rounded-full text-sm font-semibold">
             Type-safe • Easy • Powerful
           </div>
-          <h1 className="text-6xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
+          <h1 className="text-3xl md:text-6xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
             Internationalization
             <br />
             <span className="bg-gradient-to-r from-blue-600 to-cyan-600 dark:from-blue-400 dark:to-cyan-400 bg-clip-text text-transparent">
               Made Simple
             </span>
           </h1>
-          <p className="text-xl text-slate-600 dark:text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 mb-12 max-w-2xl mx-auto leading-relaxed">
             The type-safe i18n library for modern React applications. Works
             seamlessly with Next.js, React Router, and TanStack Router.
           </p>
           <div className="flex items-center justify-center gap-4 mb-16">
             <Link
               href="/docs"
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all hover:shadow-xl flex items-center gap-2"
+              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-4 md:px-8 py-2 md:py-4 rounded-lg text-base md:text-lg font-semibold transition-all hover:shadow-xl flex items-center gap-2"
             >
               Get Started <ArrowRight className="w-5 h-5" />
             </Link>
             <a
               href="https://github.com/damianricobelli/intlize"
-              className="bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white px-8 py-4 rounded-lg text-lg font-semibold border-2 border-slate-200 dark:border-slate-700 transition-all hover:border-slate-300 dark:hover:border-slate-600"
+              className="bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white px-4 md:px-8 py-2 md:py-4 rounded-lg text-base md:text-lg font-semibold border-2 border-slate-200 dark:border-slate-700 transition-all hover:border-slate-300 dark:hover:border-slate-600"
             >
               View on GitHub
             </a>
           </div>
 
-          <div className="bg-slate-900 dark:bg-slate-950 rounded-2xl shadow-2xl max-w-3xl mx-auto border border-slate-700 dark:border-slate-800 overflow-hidden">
-            <div className="flex items-center gap-2 px-6 py-4 bg-slate-800 dark:bg-slate-900 border-b border-slate-700 dark:border-slate-800">
-              <div className="flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-              </div>
-              <span className="text-slate-400 text-sm ml-4 font-mono">
-                App.tsx
-              </span>
-            </div>
-            <SyntaxHighlighter
-              language="tsx"
-              style={dracula}
-              customStyle={{
-                margin: 0,
-                padding: "1.5rem",
-                background: "transparent",
-                fontSize: "0.875rem",
-              }}
-              showLineNumbers={false}
-            >
-              {`export const { i18nClient, i18nServer, getLocalePath, getDir } = createI18n(
-  {
-    en: () => import("./en"),
-    es: () => import("./es"),
-  },
-  {
-    defaultLocale: "en",
-    fallbackLocale: "en",
-    regions: {
-      en: ["US"],
-      es: ["MX"],
-    },
-    prefixDefaultLocale: true,
-  },
-)
-
-// i18nClient.t('welcome.title') // => 'Welcome to the website'
-// i18nServer.t('welcome.title') // => 'Welcome to the website'
-// getLocalePath('/') // => /en
-// getDir('en') // => 'ltr'
-// ✨ Fully type-safe - autocomplete & errors included!`}
-            </SyntaxHighlighter>
-          </div>
+          <CodeTabs />
         </section>
 
         <section id="features" className="bg-white dark:bg-slate-900 py-24">
@@ -228,13 +182,13 @@ export default function HomePage() {
               applications with confidence. Set up in under 5 minutes and scale
               to any language.
             </p>
-            <div className="flex items-center justify-center gap-4">
-              <button className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-all hover:shadow-xl flex items-center gap-2">
-                Get Started <ArrowRight className="w-5 h-5" />
-              </button>
-              <button className="bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white px-8 py-4 rounded-lg text-lg font-semibold border-2 border-slate-200 dark:border-slate-700 transition-all hover:border-slate-300 dark:hover:border-slate-600">
+            <div className="flex items-center justify-center">
+              <Link
+                href="/docs"
+                className="bg-white hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-900 dark:text-white px-8 py-4 rounded-lg text-lg font-semibold border-2 border-slate-200 dark:border-slate-700 transition-all hover:border-slate-300 dark:hover:border-slate-600"
+              >
                 View Documentation
-              </button>
+              </Link>
             </div>
           </div>
         </section>

@@ -1,24 +1,18 @@
 import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 import { Languages } from "lucide-react";
 
-/**
- * Shared layout configurations
- *
- * you can customise layouts individually from:
- * Home Layout: app/(home)/layout.tsx
- * Docs Layout: app/docs/layout.tsx
- */
 export function baseOptions(): BaseLayoutProps {
   return {
+    githubUrl: "https://github.com/damianricobelli/intlize",
     nav: {
       title: (
-        <>
-          <Languages />
-          Intlize
-        </>
+        <div className="flex items-center gap-2 text-lg">
+          <Languages fill="currentColor" />
+          <span className="hidden md:block">Intlize</span>
+        </div>
       ),
+      transparentMode: "top",
     },
-    // see https://fumadocs.dev/docs/ui/navigation/links
     links: [],
   };
 }

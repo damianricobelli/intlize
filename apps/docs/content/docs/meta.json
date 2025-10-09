@@ -1,0 +1,22 @@
+{
+	"title": "Intlize",
+	"root": true,
+	"description": "Intlize Documentation",
+	"pages": [
+		"---Getting Started---",
+		"index",
+		"writing-locales",
+		"rtl-support",
+		"---API References---",
+		"api/create-i18n",
+		"---NextJS---",
+		"nextjs/index",
+		"nextjs/installation",
+		"---React Router---",
+		"react-router/index",
+		"react-router/installation",
+		"---TanStack Router---",
+		"tanstack-router/index",
+		"tanstack-router/installation"
+	]
+}
