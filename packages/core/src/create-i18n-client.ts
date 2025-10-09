@@ -13,28 +13,35 @@ export function createI18nClient<
 >(locales: Locales, config: CreateI18n.Config<Locales>, adapter: Adapter<LinkComponentProps>): CreateI18n.ClientReturn<Locales, Locale> {
 
   const localesCache = new Map<string, LocaleType>()
+  const pendingPromises = new Map<string, Promise<void>>()
 
   const defaultLocale = config.defaultLocale as string
   const paramName = config.paramName ?? PARAM_NAME
   const shouldPrefixDefault = config.prefixDefaultLocale ?? true
 
+  function loadLocale(locale: string) {
+    const cached = localesCache.get(locale)
+    if (cached) return cached
+
+    if (pendingPromises.has(locale)) throw pendingPromises.get(locale)!
+
+    const promise = locales[locale]().then(res => {
+      localesCache.set(locale, res.default)
+      pendingPromises.delete(locale)
+    })
+    pendingPromises.set(locale, promise)
+    throw promise
+  }
+
   return {
     t: async () => {
       const locale = adapter.useCurrentLocale()
-      let data = localesCache.get(locale)
-      if (!data) {
-        data = (await locales[locale]()).default
-        localesCache.set(locale, data)
-      }
+      const data = loadLocale(locale)
       return (key, ...params) => createT(locale, data, undefined, key, ...params)
     },
     scopedT: async (scope) => {
       const locale = adapter.useCurrentLocale()
-      let data = localesCache.get(locale)
-      if (!data) {
-        data = (await locales[locale]()).default
-        localesCache.set(locale, data)
-      }
+      const data = loadLocale(locale)
       // @ts-expect-error - no types
       return (key, ...params) => createT(locale, data, scope, key, ...params)
     },

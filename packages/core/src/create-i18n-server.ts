@@ -55,13 +55,8 @@ export function createI18nServer<
 
       const buildResult = (locale: string) => {
         const region = helpers.getRegionByLocale(config.regions, locale, config.fallbackLocale)
-        const cookies = helpers.createLocaleCookies(locale, region, paramName)
-        const headers = new Headers(request.headers)
-        headers.append("Set-Cookie", cookies.locale)
-        headers.append("Set-Cookie", cookies.fullLocale)
-        const newRequest = new Request(request, { headers })
         const fullLocale = `${locale}-${region}`
-        return { locale, region, fullLocale, request: newRequest }
+        return { locale, region, fullLocale, request }
       }
 
       // Helper to build redirect response with new locale
@@ -70,8 +65,8 @@ export function createI18nServer<
         const cookies = helpers.createLocaleCookies(targetLocale, region, paramName)
 
         const headers = new Headers()
-        headers.append("Set-Cookie", cookies.locale)
-        headers.append("Set-Cookie", cookies.fullLocale)
+        if (localeCookie !== targetLocale) headers.append("Set-Cookie", cookies.locale)
+        if (fullLocaleCookie !== `${targetLocale}-${region}`) headers.append("Set-Cookie", cookies.fullLocale)
 
         // Build new URL path
         const cleanPath = localeParam ? deleteFirstSegment(pathname) : pathname.slice(1)
