@@ -52,11 +52,7 @@ const config = {
 - **`prefixDefaultLocale`**: If show the default locale in the URL
 - **`paramName`**: Name of the parameter for the locale in React Router
 
-## Return value
-
-The function returns an object with the following properties:
-
-### i18nClient
+## i18nClient
 
 Instance for the client side with React hooks and functions.
 
@@ -64,19 +60,19 @@ Instance for the client side with React hooks and functions.
 const { t, scopedT, currentLocale, useChangeLocale, LocaleLink } = i18nClient;
 ```
 
-#### `LocaleLink`
+### `LocaleLink`
 
 Link component with localized path internally.
 
-#### `useChangeLocale`
+### `useChangeLocale`
 
 Hook to change the current locale.
 
-#### `currentLocale`
+### `currentLocale`
 
 Gets the current locale.
 
-### i18nServer
+## i18nServer
 
 Instance for the server side with functions that receive `Request`.
 
@@ -84,7 +80,7 @@ Instance for the server side with functions that receive `Request`.
 const { t, scopedT, resolve } = i18nServer;
 ```
 
-#### `resolve`
+### Resolve
 
 Function that automatically handles redirects based on the URL with locale.
 
@@ -95,11 +91,11 @@ Returns an object with the following properties:
 - `fullLocale`: The full locale of the current route.
 - `request`: The request object with updated cookies and URL.
 
-### supportedLocales
+### Supported Locales
 
 Array with all the supported locales
 
-### getLocalePath(to, locale)
+### Locale Path
 
 Generates the localized path for a given route.
 
@@ -107,7 +103,7 @@ Generates the localized path for a given route.
 getLocalePath("/about", "es"); // "/es/about"
 ```
 
-### generateStaticLocalePaths(routes)
+### Static Locale Paths
 
 Generates all the static routes for pre-rendering.
 
@@ -116,7 +112,7 @@ generateStaticLocalePaths(["/", "/about"]);
 // ["/", "/en", "/es", "/about", "/en/about", "/es/about"]
 ```
 
-### getDir(locale)
+### Get Direction
 
 Gets the direction of the text (LTR/RTL) for a language.
 
