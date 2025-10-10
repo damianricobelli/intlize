@@ -1,0 +1,36 @@
+---
+title: Variables
+description: Variables in translations
+---
+
+Variables in translations are supported out of the box.
+
+```ts title="locales/en.ts"
+export default {
+  "hello.world": "Hello {name}!",
+} as const;
+```
+
+Then, you can use the variables in the translation.
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+  return <p>{t("hello.world", { name: "John" })}</p>;
+}
+```
+
+You can also use React elements.
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+  return <p>{t("hello.world", { name: <strong>John</strong> })}</p>;
+}
+```

@@ -1,0 +1,53 @@
+---
+title: Translations
+---
+
+The `t` function is the main translation function. It is used to translate a key to the current locale.
+
+When you create an instance of the `createI18n` function, you will have the `t` function available in both the `i18nClient` and `i18nServer`.
+
+```ts title="routes/page.tsx"
+import { i18nServer } from "@/locales/i18n.config";
+
+export default async function Page({ request }: { request: Request }) {
+  const t = await i18nServer.t(request);
+  // ...
+}
+```
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+  // ...
+}
+```
+
+## How it works
+
+When you call the `t` function, it will return a function that will allow you to translate a key to the current locale.
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+  const scopedT = use(i18nClient.scopedT("hello"));
+
+  return (
+    <div>
+      <p>{t("hello")}</p>
+
+      <p>{t("hello.world")}</p>
+
+      <p>{t("welcome", { name: "John" })}</p>
+      <p>{t("welcome", { name: <strong>John</strong> })}</p>
+    </div>
+  );
+}
+```
+
+For SSR, the idea is the same, except that the function must be awaited.

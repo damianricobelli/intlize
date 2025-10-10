@@ -1,0 +1,37 @@
+---
+title: RTL Support
+---
+
+If you want to support the dir attribute in your `<html>` tag, you can use the `getDir` function from the `createI18n` instance to get the direction of the locale.
+
+```ts
+const dir = getDir(locale);
+```
+
+Although we could use something native such as the `direction` value from the Intl.Locale API, this API is not yet compatible with Firefox and we would have to add a polyfill, so we have directly built a simple function that allows us to obtain the direction according to the locale.
+
+## How it works
+
+We have a set of languages that are RTL, and we have a function that allows us to obtain the direction of the locale.
+
+```ts
+const rtlLanguages = new Set([
+  "ar", // Arabic
+  "arc", // Aramaic
+  "ckb", // Central Kurdish (Sorani)
+  "dv", // Divehi, Dhivehi, Maldivian
+  "fa", // Persian (Farsi)
+  "ha", // Hausa (written in Arabic script)
+  "he", // Hebrew
+  "khw", // Khowar
+  "ks", // Kashmiri
+  "ku", // Kurdish (some dialects)
+  "ps", // Pashto
+  "sd", // Sindhi
+  "ug", // Uyghur
+  "ur", // Urdu
+  "yi", // Yiddish
+]);
+```
+
+So if the locale is in the set, we return "rtl", otherwise we return "ltr".

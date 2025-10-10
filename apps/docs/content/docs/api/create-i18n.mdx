@@ -1,97 +1,175 @@
 ---
-title: createI18n
+title: Create i18n
+description: Main function to create an i18n instance that works on both client and server
 ---
 
-# Introduction
+The `createI18n` function is the main entry point of the library. It creates an internationalization instance that works on both the client and server sides, providing all the tools necessary to handle multiple languages in your application.
 
-This library was created thanks to the [Next International](https://github.com/QuiiBz/next-international) project and its beautiful internal international-types package, which offers developers strong typing for translations. A huge thank you to [Tom Lienard](https://x.com/tomlienard).
+```ts
+export const { i18nClient, i18nServer, getLocalePath, getDir } = createI18n(
+  {
+    en: () => import("./en"),
+    es: () => import("./es"),
+  },
+  {
+    defaultLocale: "en",
+    fallbackLocale: "en",
+    regions: {
+      en: ["US"],
+      es: ["ES"],
+    },
+    prefixDefaultLocale: true,
+  }
+);
+```
 
-The goal is to offer a simple, platform-based API so that typesafe translations can be used without any middleware or extra configuration, but rather with an identical API on the server and client sides to make everything cleaner in the developer's day-to-day work.
+## Parameters
 
-## Features
+### locales
 
-- 100% Type-safe: Type-safe translations
-- Platform-based API: Works seamlessly with Next.js, React Router, and TanStack Router
-- No extra configuration: No middleware or providers
-- Identical API on the server and client sides: Use the same API on the server and client sides. No hooks on one side and functions on the other with different names.
+Object that contains all the translations for each locale. This object is expected to be a dynamic import of the locale file.
 
-## Installation
+### config
 
-<Tabs items={["pnpm", "npm", "yarn", "bun"]}>
-  <Tab value="pnpm">
-    <Tabs items={["NextJS", "React Router", "TanStack Router"]}>
-      <Tab value="NextJS">
-        <CodeBlock className="px-4">
-          <Pre>pnpm i @intlize/nextjs</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="React Router">
-        <CodeBlock className="px-4">
-          <Pre>npm i @intlize/react-router</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="TanStack Router">
-        <CodeBlock className="px-4">
-          <Pre>yarn add @intlize/tanstack-router</Pre>
-        </CodeBlock>
-      </Tab>
-    </Tabs>
-  </Tab>
-  <Tab value="npm">
-    <Tabs items={["NextJS", "React Router", "TanStack Router"]}>
-      <Tab value="NextJS">
-        <CodeBlock className="px-4">
-          <Pre>npm i @intlize/nextjs</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="React Router">
-        <CodeBlock className="px-4">
-          <Pre>npm i @intlize/react-router</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="TanStack Router">
-        <CodeBlock className="px-4">
-          <Pre>npm i @intlize/tanstack-router</Pre>
-        </CodeBlock>
-      </Tab>
-    </Tabs>
-  </Tab>
-  <Tab value="yarn">
-    <Tabs items={["NextJS", "React Router", "TanStack Router"]}>
-      <Tab value="NextJS">
-        <CodeBlock className="px-4">
-          <Pre>yarn add @intlize/nextjs</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="React Router">
-        <CodeBlock className="px-4">
-          <Pre>yarn add @intlize/react-router</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="TanStack Router">
-        <CodeBlock className="px-4">
-          <Pre>yarn add @intlize/tanstack-router</Pre>
-        </CodeBlock>
-      </Tab>
-    </Tabs>
-  </Tab>
-  <Tab value="bun">
-    <Tabs items={["NextJS", "React Router", "TanStack Router"]}>
-      <Tab value="NextJS">
-        <CodeBlock className="px-4">
-          <Pre>bun add @intlize/nextjs</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="React Router">
-        <CodeBlock className="px-4">
-          <Pre>bun add @intlize/react-router</Pre>
-        </CodeBlock>
-      </Tab>
-      <Tab value="TanStack Router">
-        <CodeBlock className="px-4">
-          <Pre>bun add @intlize/tanstack-router</Pre>
-        </CodeBlock>
-      </Tab>
-    </Tabs>
-  </Tab>
-</Tabs>
+Configuration of the i18n instance.
+
+```ts
+const config = {
+  defaultLocale: "en",
+  fallbackLocale: "en",
+  regions: {
+    en: ["US", "CA"],
+    es: ["ES", "MX"],
+  },
+  prefixDefaultLocale: true,
+  paramName: "locale",
+};
+```
+
+- **`defaultLocale`**: Default locale
+- **`fallbackLocale`**: Fallback locale if the translation is not found
+- **`regions`**: Regions associated with each locale
+- **`prefixDefaultLocale`**: If show the default locale in the URL
+- **`paramName`**: Name of the parameter for the locale in React Router
+
+## Return value
+
+The function returns an object with the following properties:
+
+### i18nClient
+
+Instance for the client side with React hooks and functions.
+
+```ts
+const { t, scopedT, currentLocale, useChangeLocale, LocaleLink } = i18nClient;
+```
+
+#### `LocaleLink`
+
+Link component with localized path internally.
+
+#### `useChangeLocale`
+
+Hook to change the current locale.
+
+#### `currentLocale`
+
+Gets the current locale.
+
+### i18nServer
+
+Instance for the server side with functions that receive `Request`.
+
+```ts
+const { t, scopedT, resolve } = i18nServer;
+```
+
+#### `resolve`
+
+Function that automatically handles redirects based on the URL with locale.
+
+Returns an object with the following properties:
+
+- `locale`: The locale of the current route.
+- `region`: The region of the current route.
+- `fullLocale`: The full locale of the current route.
+- `request`: The request object with updated cookies and URL.
+
+### supportedLocales
+
+Array with all the supported locales
+
+### getLocalePath(to, locale)
+
+Generates the localized path for a given route.
+
+```ts
+getLocalePath("/about", "es"); // "/es/about"
+```
+
+### generateStaticLocalePaths(routes)
+
+Generates all the static routes for pre-rendering.
+
+```ts
+generateStaticLocalePaths(["/", "/about"]);
+// ["/", "/en", "/es", "/about", "/en/about", "/es/about"]
+```
+
+### getDir(locale)
+
+Gets the direction of the text (LTR/RTL) for a language.
+
+```ts
+getDir("ar"); // "rtl"
+getDir("en"); // "ltr"
+```
+
+## Example
+
+```ts
+import { createI18n } from "@intlize/nextjs";
+
+const locales = {
+  en: {
+    "hello.world": "Hello {param}!",
+    "hello.nested.translations": "Translations",
+  },
+  es: {
+    "hello.world": "Hola {param}!",
+    "hello.nested.translations": "Traducciones",
+  },
+};
+
+const config = {
+  defaultLocale: "en",
+  fallbackLocale: "en",
+  regions: {
+    en: ["US", "CA"],
+    es: ["ES", "MX"],
+  },
+  prefixDefaultLocale: true,
+};
+
+const i18n = createI18n(locales, config);
+
+// In the client
+const { t, scopedT, currentLocale, useChangeLocale } = i18n.i18nClient;
+
+// In the server
+const { t, scopedT, resolve } = i18n.i18nServer;
+```
+
+## Special features
+
+### Validation of keys
+
+The function automatically validates that all translation keys are present in all locales using `helpers.checkLocaleKeys()`
+
+### RTL support
+
+Detects automatically RTL (Right-to-Left) languages like Arabic, Hebrew, etc.
+
+### Workaround for React 19
+
+Includes a workaround to avoid warnings of React 19 in development related to un-cached promises.

@@ -2,15 +2,30 @@
 title: Writing Locales
 ---
 
-## Code Block
+Local files must be written in typescript to obtain proper type-safety for parameters.
 
-```js
-console.log("Hello World");
+## Dot notation
+
+Translations are written using dot notation. This was not a whimsical decision; there are many advantages in terms of performance that mean that even though an object may appear to have better DX, TS inference can become very complex with a lot of recursion, and in large files this can cause many performance problems.
+
+```ts title="locales/en.ts"
+export default {
+  "hello.world": "Hello {param}!",
+  "hello.nested.translations": "Translations",
+} as const;
 ```
 
-## Cards
+## Performance
 
-<Cards>
-  <Card title="Learn more about Next.js" href="https://nextjs.org/docs" />
-  <Card title="Learn more about Fumadocs" href="https://fumadocs.dev" />
-</Cards>
+- Access to keys is O(1) in a flat object (translations["hello.world"]).
+- Access to nested objects involves multiple property searches (`translations.hello.nested.translations`), which, although fast, generates more runtime operations and more memory if there are many levels.
+
+## Runtime simplicity
+
+- There are no unexpected undefined values if a sub-object does not exist.
+- It is much easier to validate that all keys in a derived language match the base language, because it is just a matter of comparing string arrays.
+
+## Ease of pluralization and namespaces
+
+- "plural#one", "scoped.translations" work just like any other key.
+- There is no need to create additional sub-objects for each plural or scope.

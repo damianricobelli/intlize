@@ -1,0 +1,44 @@
+---
+title: Scopes
+description: Translation function with scope
+---
+
+When you have a lot of keys, you may notice in a file that you always use and duplicate the same scope:
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+  return (
+    <div>
+      <p>{t("hello.nested.first")}</p>
+      <p>{t("hello.nested.second")}</p>
+      <p>{t("hello.nested.third")}</p>
+    </div>
+  );
+}
+```
+
+We can avoid this by using the `scopedT` function:
+
+```ts title="routes/page.tsx"
+import { use } from "react";
+
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const scopedT = use(i18nClient.scopedT("hello.nested"));
+  return (
+    <div>
+      <p>{scopedT("first")}</p>
+      <p>{scopedT("second")}</p>
+      <p>{scopedT("third")}</p>
+    </div>
+  );
+}
+```
+
+<Callout>The `scopedT` function works in both Client and Server sides</Callout>

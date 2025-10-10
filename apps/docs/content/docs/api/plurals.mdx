@@ -1,0 +1,51 @@
+---
+title: Plurals
+---
+
+Plural translations work out of the box without any external dependencies, using the [`Intl.PluralRules`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/PluralRules) API, which is supported in all browsers and Node.js.
+
+To declare plural translations, append `#` followed by `zero`, `one`, `two`, `few`, `many` or `other`:
+
+```ts title="locales/en.ts"
+export default {
+  "cows#zero": "No cows",
+  "cows#one": "A cow",
+  "cows#other": "{count} cows",
+} as const;
+```
+
+The correct translation will then be determined automatically using a mandatory `count` parameter. The value of `count` is determined by the union of all suffixes, enabling type safety:
+
+- `zero` allows 0
+- `one` autocompletes 1, 21, 31, 41... but allows any number
+- `two` autocompletes 2, 22, 32, 42... but allows any number
+- `few`, `many` and `other` allow any number
+
+This works in both Client and Server Components, and with [scoped translations](/docs/app-scoped-translations):
+
+```tsx title="routes/page.tsx"
+import { use } from "react";
+
+import { i18nClient } from "@/locales/i18n.config";
+
+export default function Page() {
+  const t = use(i18nClient.t());
+
+  return (
+    <div>
+      {/* Output: No cows */}
+      <p>{t("cows", { count: 0 })}</p>
+      {/* Output: A cow */}
+      <p>{t("cows", { count: 1 })}</p>
+      {/* Output: 3 cows */}
+      <p>{t("cows", { count: 3 })}</p>
+    </div>
+  );
+}
+```
+
+<Callout>
+  This documentation on plurals comes from the [Next
+  International](https://next-international.vercel.app/docs/app-plurals)
+  documentation, as the idea is identical based on their types.
+</Callout>
